@@ -40,48 +40,57 @@ def is_tie(table, tie, win):
             return tie
 
 
+def colored(text, color):
+    codes = {"red": "\u001b[31m",
+             "yellow": "\u001b[33m",
+             "blue": "\u001b[34m",
+             "light blue": "\u001b[36m",
+             "end": "\u001b[0m"}
+    return codes[color] + text + codes["end"]
+
+
 def winmsg(tie, p1turn, p1, p2):
     global player1score, player2score
     if tie:
-        print("\u001b[33mIt's a tie!\n\u001b[0m")
+        print(colored("It's a tie!\n", "yellow"))
         os.system('spd-say "It\'s a tie"')
     else:
         if p1turn:
             if p2.upper() == 'AI':
                 os.system('spd-say -r -50 "haa haa haa silly hooman you lost ha ha ha"')
                 player2score += 1
-                print("\u001b[34m" + p2 + " wins!       ツ\n\u001b[0m")
+                print(colored(p2 + " wins!       ツ\n", "blue"))
             else:
                 os.system('spd-say -r -50 "Player 2 wins"')
-                print("\u001b[33mCongratulations!\n\u001b[0m")
+                print(colored("Congratulations!\n", "yellow"))
                 player2score += 1
-                print("\u001b[34m" + p2 + " wins!       ツ\n\u001b[0m")
+                print(colored(p2 + " wins!       ツ\n", "blue"))
 
         else:
-            print("\u001b[33mCongratulations!\n\u001b[0m")
-            print("\u001b[31m" + p1 + " wins!       ツ\n\u001b[0m")
+            print(colored("Congratulations!\n", "yellow"))
+            print(colored(p1 + " wins!       ツ\n", "red"))
             os.system('spd-say -r -50 "Player 1 wins"')
             player1score += 1
 
 
 def giveError():
-    print("\u001b[33m\nMust be a number between 1 and 9!\n\u001b[0m")
+    print(colored("Must be a number between 1 and 9!\n", "yellow"))
 
 
 def giveIllegalMove():
-    print("\u001b[33m\nThat number is already taken, chose another!\n\u001b[0m")
+    print(colored("\nThat number is already taken, chose another!\n", "yellow"))
 
 
 def welcome():
     os.system('clear')
-    print("\u001b[33mWelcome to our ToeTacTic demo!\n\u001b[0m")
+    print(colored("Welcome to our ToeTacTic demo!\n", "yellow"))
 
 
 def restart(p1, p2):
-    print("\u001b[36mThe score is: \n\u001b[0m")
-    print("\u001b[31m" + str(p1) + ": " + str(player1score) + "\u001b[0m")
-    print("\u001b[34m" + str(p2) + ": " + str(player2score) + "\u001b[0m")
-    again = input("\n\u001b[36mPress (Y) to play again or (any key) to quit! \n\u001b[0m")
+    print(colored("The score is: \n", "light blue"))
+    print(colored(str(p1) + ": " + str(player1score), "red"))
+    print(colored(str(p2) + ": " + str(player2score), "blue"))
+    again = input(colored("\nPress (Y) to play again or (any key) to quit! \n", "light blue"))
     if again[0].upper() == 'Y':
         try:
             os.system('clear')
@@ -91,13 +100,13 @@ def restart(p1, p2):
     else:
         os.system('clear')
         if player1score > player2score:
-            print("\u001b[31m\n" + str(p1) + " wins!\n\u001b[0m")
+            print(colored(str(p1) + " wins!\n", "red"))
         elif player1score == player2score:
-            print("\u001b[33m\nIt's a tie!\u001b[0m\n")
+            print(colored("\nIt's a tie!\n", "yellow"))
         else:
-            print("\u001b[34m\n" + str(p2) + " wins!\n\u001b[0m")
-        print("\n\u001b[31m" + str(player1score) + "\u001b[0m : \u001b[34m" + str(player2score) + "\u001b[0m\n")
-        print("\u001b[33m\nGood bye!\n\u001b[0m")
+            print(colored("\n" + str(p2) + " wins!\n", "blue"))
+        print(colored(str(player1score), "red") + " : " + colored(str(player2score) + "\n", "blue"))
+        print(colored("\nGood bye!\n", "yellow"))
         os.system('spd-say -r -50 "Good bye"')
         quit()
 
@@ -222,8 +231,7 @@ def printBoard(table):
  │ {3} │ {4} │ {5} │\n\
  ├───┼───┼───┤\n\
  │ {6} │ {7} │ {8} │\n\
- └───┴───┴───┘ '.format(
-               *table))
+ └───┴───┴───┘ '.format(*table))
 
 
 player1score = 0
