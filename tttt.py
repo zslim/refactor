@@ -113,12 +113,12 @@ def restart(p1, p2):
 
 def input_p1():
     os.system('spd-say -r -50 "What is your name human?"')
-    p1 = input("\u001b[31mFirst player's name: \n\u001b[0m")
+    p1 = input(colored("First player's name: \n", "red"))
     return p1
 
 
 def input_p2():
-    p2 = input("\u001b[34mSecond player's name: (Type 'AI' to play against the AI) \n\u001b[0m")
+    p2 = input(colored("Second player's name: (Type 'AI' to play against the AI) \n", "blue"))
     return p2
 
 
@@ -127,8 +127,8 @@ def main(p1, p2):
     p1turn = True
     tie = False
     win = False
-    circle = '\u001b[34m◉\u001b[0m'
-    cross = '\u001b[31m✘\u001b[0m'
+    circle = colored("◉", "blue")
+    cross = colored("✘", "red")
     p1 = p1
     p2 = p2
     os.system('clear')
@@ -137,9 +137,9 @@ def main(p1, p2):
         os.system('spd-say -r -50 "i let you go first human wink wink"')
     while not win and not tie:
         if p1turn:
-            print("\u001b[31m" + str(p1) + "\'s turn!\n\u001b[0m")
+            print(colored(str(p1) + "\'s turn!\n", "red"))
             try:
-                choice = int(input("\u001b[31mEnter a number: \u001b[0m"))
+                choice = int(input(colored("Enter a number: ", "red")))
                 if choice < 1 or choice > 9:
                     giveError()
                     continue
@@ -200,9 +200,9 @@ def main(p1, p2):
                             printBoard(table)
                             p1turn = True
             else:
-                print("\u001b[34m" + str(p2) + "\'s turn! \n\u001b[0m")
+                print(colored(str(p2) + "\'s turn! \n", "blue"))
                 try:
-                    p2_choice = int(input("\u001b[34mEnter a number: \u001b[0m"))
+                    p2_choice = int(input(colored("Enter a number: ", "blue")))
                     if p2_choice < 1 or p2_choice > 9:
                         giveError()
                         continue
