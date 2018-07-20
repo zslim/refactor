@@ -10,25 +10,19 @@ def generateTable():
 
 
 def is_win(table, win=False):
-    for x in range(0, 3):
-        y = x * 3
-        if (table[y] == table[(y + 1)] and table[y] == table[(y + 2)]):
-            win = True
-            os.system('clear')
-            printBoard(table)
-            return win
-
-        if (table[x] == table[(x + 3)] and table[x] == table[(x + 6)]):
-            win = True
-            os.system('clear')
-            printBoard(table)
-            return win
-
-    if((table[0] == table[4] and table[0] == table[8]) or (table[2] == table[4] and table[4] == table[6])):
+    if ((table[0] == table[4] and table[0] == table[8]) or
+       (table[2] == table[4] and table[4] == table[6])):
         win = True
+    else:
+        for x in range(0, 3):
+            y = x * 3
+            if ((table[y] == table[(y + 1)] and table[y] == table[(y + 2)]) or
+               (table[x] == table[(x + 3)] and table[x] == table[(x + 6)])):
+                win = True
+    if win:
         os.system('clear')
         printBoard(table)
-        return win
+    return win
 
 
 def is_tie(table, tie, win):
