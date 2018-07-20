@@ -11,13 +11,13 @@ def generateTable():
 
 def is_win(table, win=False):
     if ((table[0] == table[4] and table[0] == table[8]) or
-       (table[2] == table[4] and table[4] == table[6])):
+            (table[2] == table[4] and table[4] == table[6])):
         win = True
     else:
         for x in range(0, 3):
             y = x * 3
             if ((table[y] == table[(y + 1)] and table[y] == table[(y + 2)]) or
-               (table[x] == table[(x + 3)] and table[x] == table[(x + 6)])):
+                    (table[x] == table[(x + 3)] and table[x] == table[(x + 6)])):
                 win = True
     if win:
         os.system('clear')
@@ -25,13 +25,13 @@ def is_win(table, win=False):
     return win
 
 
-def is_tie(table, tie, win):
+def is_tie(table, win, tie = False):
     if(len(set(table)) == 2):
         if not win:
             tie = True
             os.system('clear')
             printBoard(table)
-            return tie
+    return tie
 
 
 def colored(text, color):
@@ -43,26 +43,26 @@ def colored(text, color):
     return codes[color] + text + codes["end"]
 
 
-def winmsg(tie, p1turn, p1, p2):
+def winmsg(tie, player_1_turn, player_1_name, player_2_name):
     global player1score, player2score
     if tie:
         print(colored("It's a tie!\n", "yellow"))
         os.system('spd-say "It\'s a tie"')
     else:
-        if p1turn:
-            if p2.upper() == 'AI':
+        if player_1_turn:
+            if player_2_name.upper() == 'AI':
                 os.system('spd-say -r -50 "haa haa haa silly hooman you lost ha ha ha"')
                 player2score += 1
-                print(colored(p2 + " wins!       ツ\n", "blue"))
+                print(colored(player_2_name + " wins!       ツ\n", "blue"))
             else:
                 os.system('spd-say -r -50 "Player 2 wins"')
                 print(colored("Congratulations!\n", "yellow"))
                 player2score += 1
-                print(colored(p2 + " wins!       ツ\n", "blue"))
+                print(colored(player_2_name + " wins!       ツ\n", "blue"))
 
         else:
             print(colored("Congratulations!\n", "yellow"))
-            print(colored(p1 + " wins!       ツ\n", "red"))
+            print(colored(player_1_name + " wins!       ツ\n", "red"))
             os.system('spd-say -r -50 "Player 1 wins"')
             player1score += 1
 
@@ -80,58 +80,58 @@ def welcome():
     print(colored("Welcome to our ToeTacTic demo!\n", "yellow"))
 
 
-def restart(p1, p2):
+def restart(player_1_name, player_2_name):
     print(colored("The score is: \n", "light blue"))
-    print(colored(str(p1) + ": " + str(player1score), "red"))
-    print(colored(str(p2) + ": " + str(player2score), "blue"))
+    print(colored(str(player_1_name) + ": " + str(player1score), "red"))
+    print(colored(str(player_2_name) + ": " + str(player2score), "blue"))
     again = input(colored("\nPress (Y) to play again or (any key) to quit! \n", "light blue"))
     if again[0].upper() == 'Y':
         try:
             os.system('clear')
-            main(p1, p2)
+            main(player_1_name, player_2_name)
         except IndexError:
             quit()
     else:
         os.system('clear')
         if player1score > player2score:
-            print(colored(str(p1) + " wins!\n", "red"))
+            print(colored(str(player_1_name) + " wins!\n", "red"))
         elif player1score == player2score:
             print(colored("\nIt's a tie!\n", "yellow"))
         else:
-            print(colored("\n" + str(p2) + " wins!\n", "blue"))
+            print(colored("\n" + str(player_2_name) + " wins!\n", "blue"))
         print(colored(str(player1score), "red") + " : " + colored(str(player2score) + "\n", "blue"))
         print(colored("\nGood bye!\n", "yellow"))
         os.system('spd-say -r -50 "Good bye"')
         quit()
 
 
-def input_p1():
+def input_player_1_name():
     os.system('spd-say -r -50 "What is your name human?"')
-    p1 = input(colored("First player's name: \n", "red"))
-    return p1
+    player_1_name = input(colored("First player's name: \n", "red"))
+    return player_1_name
 
 
-def input_p2():
-    p2 = input(colored("Second player's name: (Type 'AI' to play against the AI) \n", "blue"))
-    return p2
+def input_player_2_name():
+    player_2_name = input(colored("Second player's name: (Type 'AI' to play against the AI) \n", "blue"))
+    return player_2_name
 
 
-def main(p1, p2):
+def main(player_1_name, player_2_name):
     table = generateTable()
-    p1turn = True
+    player_1_turn = True
     tie = False
     win = False
     circle = colored("◉", "blue")
     cross = colored("✘", "red")
-    p1 = p1
-    p2 = p2
+    player_1_name = player_1_name
+    player_2_name = player_2_name
     os.system('clear')
     printBoard(table)
-    if p2.upper() == 'AI':
+    if player_2_name.upper() == 'AI':
         os.system('spd-say -r -50 "i let you go first human wink wink"')
     while not win and not tie:
-        if p1turn:
-            print(colored(str(p1) + "\'s turn!\n", "red"))
+        if player_1_turn:
+            print(colored(str(player_1_name) + "\'s turn!\n", "red"))
             try:
                 choice = int(input(colored("Enter a number: ", "red")))
                 if choice < 1 or choice > 9:
@@ -144,13 +144,13 @@ def main(p1, p2):
                     table[choice - 1] = cross
                     os.system('clear')
                     printBoard(table)
-                    p1turn = False
+                    player_1_turn = False
             except ValueError:
                 giveError()
                 continue
         else:
-            if p2.upper() == 'AI':
-                while not p1turn:
+            if player_2_name.upper() == 'AI':
+                while not player_1_turn:
                     for i in range(9):
                         ai_table = table.copy()
                         win_move = False
@@ -162,9 +162,9 @@ def main(p1, p2):
                             table[i] = circle
                             os.system('clear')
                             printBoard(table)
-                            p1turn = True
+                            player_1_turn = True
                             break
-                    if not p1turn:
+                    if not player_1_turn:
                         for i in range(9):
                             ai_table = table.copy()
                             win_move = False
@@ -176,45 +176,45 @@ def main(p1, p2):
                                 table[i] = circle
                                 os.system('clear')
                                 printBoard(table)
-                                p1turn = True
+                                player_1_turn = True
                                 break
                         ai_choice = random.randint(0, 8)
                         if table[ai_choice] == cross or table[ai_choice] == circle:
                             continue
-                        elif p1turn:
+                        elif player_1_turn:
                             break
                         if table[4] != circle and table[4] != cross:
                             table[4] = circle
                             os.system('clear')
                             printBoard(table)
-                            p1turn = True
+                            player_1_turn = True
                         else:
                             table[ai_choice] = circle
                             os.system('clear')
                             printBoard(table)
-                            p1turn = True
+                            player_1_turn = True
             else:
-                print(colored(str(p2) + "\'s turn! \n", "blue"))
+                print(colored(str(player_2_name) + "\'s turn! \n", "blue"))
                 try:
-                    p2_choice = int(input(colored("Enter a number: ", "blue")))
-                    if p2_choice < 1 or p2_choice > 9:
+                    player_2_choice = int(input(colored("Enter a number: ", "blue")))
+                    if player_2_choice < 1 or player_2_choice > 9:
                         giveError()
                         continue
-                    elif table[p2_choice - 1] == cross or table[p2_choice - 1] == circle:
+                    elif table[player_2_choice - 1] == cross or table[player_2_choice - 1] == circle:
                         giveIllegalMove()
                         continue
                     else:
-                        table[p2_choice - 1] = circle
+                        table[player_2_choice - 1] = circle
                         os.system('clear')
                         printBoard(table)
-                        p1turn = True
+                        player_1_turn = True
                 except ValueError:
                     giveError()
                     continue
         win = is_win(table, win)
-        tie = is_tie(table, tie, win)
-    winmsg(tie, p1turn, p1, p2)
-    restart(p1, p2)
+        tie = is_tie(table, win, tie)
+    winmsg(tie, player_1_turn, player_1_name, player_2_name)
+    restart(player_1_name, player_2_name)
 
 
 def printBoard(table):
@@ -231,4 +231,4 @@ def printBoard(table):
 player1score = 0
 player2score = 0
 welcome()
-main(input_p1(), input_p2())
+main(input_player_1_name(), input_player_2_name())
